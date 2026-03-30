@@ -11,6 +11,7 @@ exports.register = async (req, res, next) => {
   try {
     const { phone } = req.body;
 
+
     let user = await User.findOne({ phone });
     if (!user) {
       user = await User.create({
@@ -42,13 +43,25 @@ exports.register = async (req, res, next) => {
   }
 };
 
+exports.getProfile = async (req, res, next) => {
+  try {
+    const user = await User.find();
+    res.status(200).json({ status: 'success', data: user });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // POST /auth/verify-otp
 exports.verifyOTP = async (req, res, next) => {
   try {
     const { phone, otp } = req.body;
-
+    
+    
     const user = await User.findOne({ phone });
     if (!user) return next(new AppError('User not found', 404));
+
+    console.log(user)
 
     if (!user.otp?.code) return next(new AppError('No OTP requested', 400));
 

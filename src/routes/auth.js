@@ -13,6 +13,12 @@ router.post(
   ctrl.register
 );
 
+
+router.get(
+  '/me',
+  ctrl.getProfile
+);
+
 router.post(
   '/verify-otp',
   authLimiter,

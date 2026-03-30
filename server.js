@@ -9,11 +9,11 @@ const PORT = process.env.PORT || 5000;
 const start = async () => {
   await connectDB();
 
-  app.listen(PORT, () => {
+  app.listen(PORT,'0.0.0.0', () => {
     console.log(`Hisab AI server running on port ${PORT} [${process.env.NODE_ENV}]`);
   });
 
-  // Start scheduled jobs
+  // Start scheduled jobs 
   startReminderCron();
   startExpiryJob();
 };

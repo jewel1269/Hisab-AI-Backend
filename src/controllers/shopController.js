@@ -16,6 +16,7 @@ exports.getShops = async (req, res, next) => {
 
 // POST /shops
 exports.createShop = async (req, res, next) => {
+  
   try {
     const plan = req.user.activePlan;
     const limit = SHOP_LIMITS[plan] || 1;
@@ -25,6 +26,7 @@ exports.createShop = async (req, res, next) => {
     }
 
     const { shopName, ownerName, address, category } = req.body;
+    console.log(req.body);
     const shop = await Shop.create({
       userId: req.user._id,
       shopName,

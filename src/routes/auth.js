@@ -16,6 +16,7 @@ router.post(
 
 router.get(
   '/me',
+  protect,
   ctrl.getProfile
 );
 

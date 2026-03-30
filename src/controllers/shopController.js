@@ -18,7 +18,7 @@ exports.getShops = async (req, res, next) => {
 exports.createShop = async (req, res, next) => {
   
   try {
-    const plan = req.user.activePlan;
+    const plan = req.user.plan;
     const limit = SHOP_LIMITS[plan] || 1;
     const count = await Shop.countDocuments({ userId: req.user._id, isActive: true });
     if (count >= limit) {
@@ -34,6 +34,7 @@ exports.createShop = async (req, res, next) => {
       address,
       category,
     });
+
 
     res.status(201).json({ status: 'success', data: shop });
   } catch (err) {

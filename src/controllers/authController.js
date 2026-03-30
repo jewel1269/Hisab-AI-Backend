@@ -3,6 +3,7 @@ const { generateOTP, getOTPExpiry, isOTPValid } = require('../utils/otp');
 const { signToken, signRefreshToken, verifyRefreshToken } = require('../utils/jwt');
 const { sendSMS } = require('../services/smsService');
 const AppError = require('../utils/AppError');
+const Shop = require('../models/Shop');
 
 const MAX_ATTEMPTS = parseInt(process.env.OTP_MAX_ATTEMPTS || '3');
 
@@ -44,18 +45,25 @@ exports.register = async (req, res, next) => {
 };
 
 exports.getProfile = async (req, res, next) => {
-  try {
-    const user = await User.find();
-    res.status(200).json({ status: 'success', data: user });
-  } catch (err) {
-    next(err);
+  const user = await User.findById(req.user._id).lean(); 
+  if (!user) {
+    return res.status(404).json({ status: 'fail', message: 'User not found' });
   }
+  const activeShop = await Shop.findOne({ userId: user._id, isActive: true }).select('_id');
+  res.json({
+    status: 'success',
+    user: { 
+      ...user, 
+      activeShopId: activeShop ? activeShop._id : null 
+    },
+  });
 };
 
 // POST /auth/verify-otp
 exports.verifyOTP = async (req, res, next) => {
   try {
     const { phone, otp } = req.body;
+    console.log(phone, otp)
     
     
     const user = await User.findOne({ phone });

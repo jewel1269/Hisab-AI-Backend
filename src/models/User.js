@@ -51,7 +51,7 @@ userSchema.virtual('isPlanActive').get(function () {
   return this.planExpiresAt && this.planExpiresAt > new Date();
 });
 
-userSchema.virtual('activePlan').get(function () {
+userSchema.virtual('currentPlan').get(function () {
   if (this.plan !== 'free' && (!this.planExpiresAt || this.planExpiresAt <= new Date())) {
     return 'free';
   }

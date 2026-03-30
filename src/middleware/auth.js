@@ -29,7 +29,7 @@ const protect = async (req, res, next) => {
 // Check plan access
 const requirePlan = (...plans) => {
   return (req, res, next) => {
-    const userPlan = req.user.activePlan;
+    const userPlan = req.user.plan;
     if (!plans.includes(userPlan)) {
       return next(
         new AppError(`This feature requires: ${plans.join(' or ')} plan`, 403)

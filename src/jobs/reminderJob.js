@@ -21,7 +21,7 @@ const runReminderJob = async () => {
       if (!user || !user.isActive) continue;
 
       // Only pro/business can send auto reminders
-      const plan = user.activePlan;
+      const plan = user.plan;
       if (plan === 'free') continue;
 
       // Check SMS quota for pro plan (50/month)

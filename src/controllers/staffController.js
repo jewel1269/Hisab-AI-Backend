@@ -20,7 +20,6 @@ exports.getStaff = async (req, res, next) => {
 // POST /shops/:shopId/staff
 exports.addStaff = async (req, res, next) => {
   try {
-    // Only owner can add staff
     if (!req.isShopOwner) return next(new AppError('Only shop owner can add staff', 403));
 
     const count = await StaffAccount.countDocuments({ shopId: req.shop._id, isActive: true });
@@ -29,6 +28,7 @@ exports.addStaff = async (req, res, next) => {
     }
 
     const { phone, name, role = 'editor' } = req.body;
+    console.log(req.shop._id, req.user?._id)
 
     if (phone === req.user.phone) {
       return next(new AppError('Cannot add yourself as staff', 400));
@@ -41,9 +41,11 @@ exports.addStaff = async (req, res, next) => {
     // Link to existing Hisab AI user if they have one
     const existingUser = await User.findOne({ phone });
 
+     
+
     const staff = await StaffAccount.create({
       shopId: req.shop._id,
-      ownerId: req.user._id,           // fixed: was userId
+      ownerId: req.user._id,         
       staffUserId: existingUser?._id || null,
       phone,
       name,
@@ -51,6 +53,8 @@ exports.addStaff = async (req, res, next) => {
       status: existingUser ? 'active' : 'invited',
       acceptedAt: existingUser ? new Date() : null,
     });
+
+    
 
     // SMS invite
     const roleLabel = role === 'editor' ? 'স্টাফ' : 'দর্শক';

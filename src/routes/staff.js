@@ -15,6 +15,7 @@ router.post(
     body('role').optional().isIn(['viewer', 'editor']),
   ],
   validate,
+  protect,
   ctrl.addStaff
 );
 router.put('/:staffId', ctrl.updateStaff);

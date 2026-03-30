@@ -115,12 +115,13 @@ exports.verifyPayment = async (req, res, next) => {
 exports.getCurrentSubscription = async (req, res, next) => {
   try {
     const user = req.user;
-    const activePlan = user.activePlan;
+    const activePlan = user.plan;
 
     const subscription = await Subscription.findOne({
       userId: user._id,
       status: 'active',
     }).sort('-createdAt');
+    console.log(subscription)
 
     const smsUsed = subscription?.smsUsedThisMonth || 0;
     const smsLimit = activePlan === 'pro' ? 50 : activePlan === 'business' ? null : 0;

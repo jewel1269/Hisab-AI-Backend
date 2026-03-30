@@ -68,6 +68,7 @@ exports.createTransaction = async (req, res, next) => {
   session.startTransaction();
   try {
     const { customerId, type, amount, note, transactionDate } = req.body;
+    console.log(req.body)
 
     const transaction = await createTransactionAtomic(session, {
       customerId,

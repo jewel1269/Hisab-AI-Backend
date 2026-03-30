@@ -38,7 +38,7 @@ exports.getCustomers = async (req, res, next) => {
 // POST /shops/:shopId/customers
 exports.createCustomer = async (req, res, next) => {
   try {
-    const plan = req.user.activePlan;
+    const plan = req.user.plan;
     const limit = CUSTOMER_LIMITS[plan];
     if (limit !== Infinity) {
       const count = await Customer.countDocuments({ shopId: req.shop._id, isActive: true });

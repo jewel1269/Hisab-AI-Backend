@@ -7,7 +7,7 @@ const dayjs = require('dayjs');
 // Returns complete data dump as JSON (for cloud backup / data portability)
 exports.fullExport = async (req, res, next) => {
   try {
-    const plan = req.user.activePlan;
+    const plan = req.user.plan;
 
     // Free: only last 7 days
     // Pro: last 1 year

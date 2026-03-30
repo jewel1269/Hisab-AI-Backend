@@ -38,7 +38,7 @@ const incrementSMSUsage = async (userId) => {
 exports.sendManualReminder = async (req, res, next) => {
   try {
     const { channel = 'sms' } = req.body;
-    const plan = req.user.activePlan;
+    const plan = req.user.plan;
 
     const customer = await Customer.findOne({
       _id: req.params.customerId,
